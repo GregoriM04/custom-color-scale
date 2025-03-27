@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FavIcon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png" />
+  <link rel="shortcut icon" href="./assets/favicon/favicon.ico" type="image/x-icon" />
+  <link rel="manifest" href="./assets/favicon/site.webmanifest" />
+
+  <!-- CSS stylesheets -->
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <title>Custom Color Scale</title>
+</head>
+
+<body>
+  <header id="header" class="header">
+    <h1 class="main-title">Custom Color Scale</h1>
+    <img src="./assets/images/moon.svg" alt="dark mode" id="light-dark-mode" class="light-dark-mode" />
+  </header>
+  <main id="main" class="main">
+    <section id="selector-section" class="selector-section">
+      <div id="text-section" class="text-section">
+        <h2 id="subtitle" class="subtitle">Set up your color</h2>
+        <p id="guide-text" class="guide-text">
+          Press the space to get new random colors, insert your own custom Hex code, or pick one to create a custom
+          scale.
+        </p>
+      </div>
+      <div id="action-section" class="action-section">
+        <p class="text">Your color</p>
+        <div id="user-input" class="user-input">
+          <input type="text" id="input" class="input" placeholder="Hexcode" value="#e32345" />
+          <div id="color-selected" class="color-selected"></div>
+          <div id="canvas-container" class="canvas-container">
+            <div id="color-wheel-container" class="color-wheel-container">
+              <canvas id="color-wheel" width="150" height="150" class="color-wheel"></canvas>
+              <div id="selected-color-box-container" class="selected-color-box-container">
+                <div id="selected-color-box" class="selected-color-box"></div>
+                <p id="selected-color-text" class="selected-color-text">#e32345</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="example-color-section" class="example-color-section">
+        <p class="text">More options</p>
+        <div id="example-colors" class="example-colors">
+          <div id="example-1" class="example-1 example"></div>
+          <div id="example-2" class="example-2 example"></div>
+          <div id="example-3" class="example-3 example"></div>
+          <div id="example-4" class="example-4 example"></div>
+          <div id="example-5" class="example-5 example"></div>
+          <div id="example-6" class="example-6 example"></div>
+          <div id="example-7" class="example-7 example"></div>
+          <div id="example-8" class="example-8 example"></div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <p class="text">Random and Download</p>
+        <div class="buttons">
+          <button id="new-colors" class="new-colors act-buttons">
+            Random Colors
+          </button>
+          <button id="get-scale" class="copy-scale act-buttons">
+            Get Actual Scale
+          </button>
+        </div>
+      </div>
+      <div class="w-h-control"></div>
+    </section>
+    <section id="scale-section" class="scale-section">
+      <div class="scales main-scale">
+        <h3>Main scale</h3>
+        <div class="color-container">
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+        </div>
+      </div>
+      <div class="scales lighter-scale">
+        <h3>More lighter colors</h3>
+        <div class="color-container">
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+        </div>
+      </div>
+      <div class="scales darker-scale">
+        <h3>More darker colors</h3>
+        <div class="color-container">
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+          <div class="colors-div-base-propeties"></div>
+        </div>
+      </div>
+    </section>
+    <section id="get-scale-section" class="get-scale-section">
+      <div class="get-scale-section-wrapper">
+        <div class="copy-scale-container">
+          <div class="copy-scale-container-header">
+            <h3>Get Main Scale</h3>
+            <img src="./assets/images/cross-black.svg" alt="cross image" id="close-section" class="close-section">
+          </div>
+          <div class="copy-scale-container-body">
+            <div class="scale-options">
+              <p id="css-option" class="css-option btn-option active-option">CSS</p>
+              <p id="tailwind-option" class="tailwind-option btn-option">Tailwind</p>
+            </div>
+            <div id="shades-container" class="shades-container">
+            </div>
+          </div>
+          <div class="copy-result-container">
+            <button id="copy-result" class="copy-result">Copy Scale</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    </section>
+  </main>
+  <script src="./main.js"></script>
+</body>
+
+</html>
