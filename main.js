@@ -292,12 +292,12 @@ function generateDarkScale(hex, steps = 5) {
 }
 
 // function to get all the scales to set
-function getAllScales(input) {
+function getAllScales(userHexCode) {
   let allScales = [];
 
-  let mainScale = generateColorScale(input, 7);
-  let lightScale = generateLightScale(input, 7);
-  let darkScale = generateDarkScale(input, 7);
+  let mainScale = generateColorScale(userHexCode, 7);
+  let lightScale = generateLightScale(userHexCode, 7);
+  let darkScale = generateDarkScale(userHexCode, 7);
   allScales.push(mainScale, lightScale, darkScale);
 
   return allScales;
@@ -333,10 +333,10 @@ for (let i = 0; i < tagElements.length; i += 1) {
   colorWheelTagNames.push(tagElements[i].className);
 }
 
-body.addEventListener("click", (e) => {
-  let clickTarget = e.target.className;
+body.addEventListener("click", (element) => {
+  let clickTarget = element.target.className;
 
-  let found = colorWheelTagNames.find((element) => element == clickTarget);
+  let found = colorWheelTagNames.find((tag) => tag == clickTarget);
   if (found == undefined) {
     colorWheelContainer.style.display = "none";
     selectedColorBoxContainer.style.display = "none";
@@ -488,8 +488,8 @@ exampleColorContainer.addEventListener("click", (event) => {
 });
 
 // set manual color added via the input
-userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
+userInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
     userColorSelected.style.background = userInput.value;
     selectedColorText.innerText = userInput.value;
     setAllScales();
@@ -497,11 +497,11 @@ userInput.addEventListener("keypress", (e) => {
 });
 
 // get new scale from random color when 'Spacebar' is press
-window.addEventListener("keypress", (e) => {
+window.addEventListener("keypress", (event) => {
   let randomId = Math.floor(Math.random() * 64);
   let newRandomColorToSet = sixtyFourRandomColors[randomId];
 
-  if (e.key === " " || e.key === "Spacebar") {
+  if (event.key === " " || event.key === "Spacebar") {
     e.preventDefault();
     userInput.value = newRandomColorToSet;
     userColorSelected.style.background = newRandomColorToSet;
@@ -513,23 +513,23 @@ window.addEventListener("keypress", (e) => {
 for (let i = 0; i < colorContainer.length; i += 1) {
   for (let j = 0; j < 7; j += 1) {
     let variable = colorContainer[i].children[j];
-    variable.addEventListener("click", (e) => {
-      let name = "#" + e.target.innerText;
+    variable.addEventListener("click", (element) => {
+      let name = "#" + element.target.innerText;
       navigator.clipboard.writeText(name); // copy target color to the clipboard
 
       // set a "copied" feedback text when clicked
       let colorText = e.target.innerText;
-      e.target.innerText = "Copied!";
+      element.target.innerText = "Copied!";
       setTimeout(() => {
-        e.target.innerText = colorText;
+        element.target.innerText = colorText;
       }, 1500);
     });
   }
 }
 
 // close the copy modal when click outside of it
-getScaleSection.addEventListener("click", (e) => {
-  if (e.target.classList == "get-scale-section") {
+getScaleSection.addEventListener("click", (element) => {
+  if (element.target.classList == "get-scale-section") {
     getScaleSection.style.visibility = "hidden";
   }
 });
