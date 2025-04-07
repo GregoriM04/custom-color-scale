@@ -502,7 +502,7 @@ window.addEventListener("keypress", (event) => {
   let newRandomColorToSet = sixtyFourRandomColors[randomId];
 
   if (event.key === " " || event.key === "Spacebar") {
-    e.preventDefault();
+    event.preventDefault();
     userInput.value = newRandomColorToSet;
     userColorSelected.style.background = newRandomColorToSet;
     setAllScales();
