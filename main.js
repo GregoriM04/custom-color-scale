@@ -1,33 +1,11 @@
-/* Dark/Light mode */
-const body = document.querySelector("body");
-const modeToggle = document.getElementById("light-dark-mode");
-
-let getMode = localStorage.getItem("mode");
-if (getMode && getMode === "dark") {
-  body.classList.toggle("dark");
-  modeToggle.setAttribute("src", "./assets/images/sun.svg");
-}
-
-modeToggle.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    localStorage.setItem("mode", "dark");
-    modeToggle.setAttribute("src", "./assets/images/sun.svg");
-    closeButton.setAttribute("src", "./assets/images/cross-white.svg");
-  } else {
-    localStorage.setItem("mode", "light");
-    modeToggle.setAttribute("src", "./assets/images/moon.svg");
-    closeButton.setAttribute("src", "./assets/images/cross-black.svg");
-  }
-});
-
 /* Main Functionality */
 const exampleColorContainer = document.getElementById("example-colors");
 const exampleColors = document.getElementsByClassName("example");
 const userInput = document.getElementById("input");
+const moreColors = document.getElementById("more-colors");
 const userColorSelected = document.getElementById("color-selected");
-const randomColorsButton = document.getElementById("new-colors");
-const colorContainer = document.getElementsByClassName("color-container");
+const newColorsButton = document.getElementById("new-colors");
+const colorContainerDivs = document.querySelectorAll(".color-container div");
 const getScaleSection = document.getElementById("get-scale-section");
 const getActualScale = document.getElementById("get-scale");
 const closeButton = document.getElementById("close-section");
@@ -45,6 +23,60 @@ const selectedColorBox = document.querySelector("#selected-color-box");
 const selectedColorText = document.querySelector("#selected-color-text");
 const colorSelected = document.querySelector("#color-selected");
 const copyResult = document.getElementById("copy-result");
+const copyScaleContainer = document.querySelector(".copy-scale-container");
+const shadeContainer = document.querySelector(".shades-container");
+const shadeContainerPtags = document.querySelectorAll(".shades-container p");
+const pictureGradient = document.querySelector(".picture-gradient");
+const demoPersonName = document.querySelector(".demo-person-name");
+const gamepadGradient = document.querySelector(".gamepad-gradient");
+const gpGd = document.querySelector(".gp-gd");
+const demoGamepadText = document.querySelector(".demo-gamepad-text");
+const shopBtn = document.querySelector(".shop-btn");
+const demoCardThree = document.querySelector(".demo-card-3");
+const demoDate = document.querySelector(".demo-date");
+const timelines = document.querySelectorAll(".timelines");
+const timelinesInfoPtags = document.querySelectorAll(".info p");
+const timelinesInfoDivtags = document.querySelectorAll(".options div");
+const demoUserProfile = document.querySelector(".demo-user-profile");
+const demoCardFour = document.querySelector(".demo-card-4");
+const demoUserBanner = document.querySelector(".demo-user-banner");
+const profilePictureImg = document.querySelector(".profile-picture-img");
+const profilePictureP = document.querySelectorAll(".profile-information p");
+const userFollowBtn = document.querySelector(".user-follow-btn");
+const demoExpense = document.querySelector(".demo-expense");
+const chart = document.querySelector(".chart");
+const centerText = document.querySelector(".center-text");
+const circle = document.querySelector(".circle");
+const legendColor = document.querySelector(".legend-color");
+const tech = document.querySelector(".tech");
+const household = document.querySelector(".household");
+const travel = document.querySelector(".travel");
+const demoCardSix = document.querySelector(".demo-card-6");
+const demoBtn1 = document.querySelector(".btn-1");
+const demoBtn2 = document.querySelector(".btn-2");
+const demoBtn3 = document.querySelector(".btn-3");
+const demoBtn4 = document.querySelector(".btn-4");
+const demoBtn5 = document.querySelector(".btn-5");
+const demoCardSeven = document.querySelector(".demo-card-7");
+const demoCareerSelector = document.querySelector(".demo-career-selector");
+const radioInputLabel = document.querySelectorAll(".radio-input label");
+const careerWrapperP = document.querySelectorAll(".career-wrapper p");
+const careerName = document.querySelector(".career-name");
+const careerDescription = document.querySelector(".career-description");
+const demoPlanCard = document.querySelector(".demo-plan-card");
+const planTitle = document.querySelector(".plan-title");
+const planPrice = document.querySelector(".plan-price");
+const planDescription = document.querySelector(".plan-description");
+const planBtn = document.querySelector(".plan-btn");
+const footerSectionWrapper = document.querySelector(".footer-section-wrapper");
+const heartIcon = document.querySelector(".heart-icon");
+const footerText = document.querySelectorAll(".footer-text *");
+const githubIcon = document.querySelector("#github-icon");
+
+/* Dark/Light mode */
+const body = document.querySelector("body");
+const modeToggle = document.getElementById("light-dark-mode");
+let getMode = localStorage.getItem("mode");
 
 // function to generate 64 random vivid colors
 function generateVividColors(count = 64) {
@@ -117,8 +149,10 @@ function setRandomColors() {
     currentMoreOptionColor.pop();
   }
 
+  let numberOfNewColors = 8;
+
   let newIdsToUse = getRandomIds();
-  for (let i = 0; i < exampleColors.length; i += 1) {
+  for (let i = 0; i < numberOfNewColors; i += 1) {
     let colorToSet = sixtyFourRandomColors[newIdsToUse[i]];
     let colorName = colorToSet.slice(1);
     let textColor = setContrast(hexToRgb(colorToSet));
@@ -244,86 +278,241 @@ function hslToHex(h, s, l) {
 
 // function to generate the scale with the given color (hexcode)
 function generateColorScale(hex, steps = 7) {
-  // 7 steps is the sweet spot
   let hsl = hexToHSL(hex);
-  let scale = [];
-
-  for (let i = 0; i < steps; i++) {
-    let newL = Math.max(
-      5,
-      Math.min(95, hsl.l + (i - Math.floor(steps / 2)) * 15)
-    );
-    scale.push(hslToHex(hsl.h, hsl.s, newL));
-  }
-
-  return scale;
-}
-
-// function to get lighter scale from the given color (hexcode)
-function generateLightScale(hex, steps = 5) {
-  let hsl = hexToHSL(hex);
+  let start = [];
+  let finish = [];
   let scale = [];
 
   // Start from the original lightness and progressively increase it
-  let stepSize = (95 - hsl.l) / (steps - 1); // Avoid reaching 100% lightness
+  let stepSizeTop = (95 - hsl.l) / (steps - 1); // Avoid reaching 100% lightness
 
   for (let i = 0; i < steps; i++) {
-    let newL = Math.min(95, hsl.l + i * stepSize); // Ensure it stays within 95%
-    scale.push(hslToHex(hsl.h, hsl.s, newL));
+    let newL = Math.min(95, hsl.l + i * stepSizeTop); // Ensure it stays within 95%
+    start.unshift(hslToHex(hsl.h, hsl.s, newL));
   }
-
-  return scale;
-}
-
-// function get darker scale from the given color (hexcode)
-function generateDarkScale(hex, steps = 5) {
-  let hsl = hexToHSL(hex);
-  let scale = [];
 
   // Start from the original lightness and progressively decrease it
-  let stepSize = (hsl.l - 5) / (steps - 1); // Avoid reaching 0% lightness
+  let stepSizeBottom = (hsl.l - 5) / (steps - 1); // Avoid reaching 0% lightness
 
   for (let i = 0; i < steps; i++) {
-    let newL = Math.max(5, hsl.l - i * stepSize); // Ensure it stays within 5%
-    scale.push(hslToHex(hsl.h, hsl.s, newL));
+    let newL = Math.max(5, hsl.l - i * stepSizeBottom); // Ensure it stays within 5%
+    finish.push(hslToHex(hsl.h, hsl.s, newL));
   }
+
+  // removed last element to avoid having the same value twice
+  start.pop();
+
+  // store both arrays in a single
+  start.forEach((element) => {
+    scale.push(element);
+  });
+
+  finish.forEach((element) => {
+    scale.push(element);
+  });
 
   return scale;
 }
 
-// function to get all the scales to set
-function getAllScales(userHexCode) {
-  let allScales = [];
-
-  let mainScale = generateColorScale(userHexCode, 7);
-  let lightScale = generateLightScale(userHexCode, 7);
-  let darkScale = generateDarkScale(userHexCode, 7);
-  allScales.push(mainScale, lightScale, darkScale);
-
-  return allScales;
-}
+// THIS IS THE LINE THAT GENERATE SCALE WITH THE GIVEN INPUT
+let currentPalette;
 
 // function to set all scales generated
 function setAllScales() {
-  let scaleToSet = getAllScales(userInput.value);
-  let index = 0; // 0-2
-  const loop = 3;
+  let scaleToSet = generateColorScale(userInput.value, 7);
+  currentPalette = scaleToSet.slice(); // external storage
+  for (let i = 0; i < scaleToSet.length; i += 1) {
+    let divColor = colorContainerDivs[i];
+    let bgColor = scaleToSet[i];
+    let divName = bgColor.substring(1);
+    let textColor = setContrast(hexToRgb(bgColor));
+    divColor.style.background = bgColor;
+    divColor.innerText = divName;
+    divColor.style.color = textColor;
+  }
 
-  for (let i = 0; i < loop; i += 1) {
-    let colorContainerChildren = colorContainer[index].children;
-    let divColor = colorContainerChildren;
-    for (let j = 0; j < colorContainerChildren.length; j += 1) {
-      let colorToUse = scaleToSet[index][j];
-      let name = colorToUse.slice(1);
-      let textColor = setContrast(hexToRgb(colorToUse));
-      divColor[j].style.background = colorToUse;
-      divColor[j].innerText = name;
-      divColor[j].style.color = textColor;
-    }
-    index += 1;
+  if (body.className === "dark") {
+    setDemoColors("dark");
+  } else {
+    setDemoColors("light");
   }
 }
 setAllScales();
+
+// function to set colors on demo section
+function setDemoColors(str) {
+  if (str === "light") {
+    gamepadGradient.style.backgroundColor = `${currentPalette[0]}`;
+    gpGd.style.background = `radial-gradient(circle farthest-corner at 60px 45px,${currentPalette[6]}, ${currentPalette[0]} 80%)`;
+    demoGamepadText.style.color = `${currentPalette[12]}`;
+    shopBtn.style.color = `${currentPalette[0]}`;
+    shopBtn.style.backgroundColor = `${currentPalette[12]}`;
+    demoCardThree.style.border = `1px solid ${currentPalette[11]}`;
+    demoCardThree.style.backgroundColor = `${currentPalette[10]}`;
+    demoDate.style.color = `${currentPalette[0]}`;
+    timelines.forEach((element) => {
+      element.style.borderLeft = `8px solid ${currentPalette[6]}`;
+      element.style.backgroundColor = `${currentPalette[1]}`;
+    });
+    timelinesInfoPtags.forEach((element) => {
+      element.style.color = `${currentPalette[12]}`;
+    });
+    timelinesInfoDivtags.forEach((element) => {
+      element.style.color = `${currentPalette[12]}`;
+    });
+    demoCardFour.style.border = `1px solid ${currentPalette[1]}`;
+    demoUserBanner.style.background = `linear-gradient(135deg, #0000 18.75%, ${currentPalette[4]} 0 31.25%, #0000 0), repeating-linear-gradient(45deg, ${currentPalette[4]} -6.25% 6.25%, ${currentPalette[8]} 0 18.75%)`;
+    demoUserBanner.style.backgroundSize = `66px 66px`;
+    profilePictureImg.style.border = `5px solid #fff`;
+    profilePictureP.forEach((element) => {
+      element.style.color = `${currentPalette[11]}`;
+    });
+    userFollowBtn.style.backgroundColor = `${currentPalette[11]}`;
+    userFollowBtn.style.color = `${currentPalette[0]}`;
+    demoExpense.style.backgroundColor = `${currentPalette[0]}`;
+    centerText.style.color = `${currentPalette[11]}`;
+    chart.style.setProperty("--bg-color", `${currentPalette[0]}`);
+    circle.style.background = ` conic-gradient(
+    ${currentPalette[2]} 0% 33.33%,
+    ${currentPalette[7]} 33.33% 66.66%,
+    ${currentPalette[10]} 66.66% 100%
+    )`;
+    legendColor.style.color = `${currentPalette[12]}`;
+    tech.style.backgroundColor = `${currentPalette[2]}`;
+    household.style.backgroundColor = `${currentPalette[7]}`;
+    travel.style.backgroundColor = `${currentPalette[10]}`;
+    demoCardSix.style.border = `1px solid ${currentPalette[0]}`;
+    demoCardSix.style.backgroundColor = `${currentPalette[0]}`;
+    demoBtn1.style.backgroundColor = `${currentPalette[4]}`;
+    demoBtn1.style.color = `${currentPalette[0]}`;
+    demoBtn2.style.backgroundColor = `${currentPalette[6]}`;
+    demoBtn2.style.color = `${currentPalette[0]}`;
+    demoBtn3.style.backgroundColor = `${currentPalette[7]}`;
+    demoBtn3.style.color = `${currentPalette[0]}`;
+    demoBtn4.style.backgroundColor = `${currentPalette[0]}`;
+    demoBtn4.style.color = `${currentPalette[8]}`;
+    demoBtn4.style.border = `2px solid ${currentPalette[8]}`;
+    demoBtn5.style.backgroundColor = `${currentPalette[1]}`;
+    demoBtn5.style.color = `${currentPalette[4]}`;
+    demoCardSeven.style.border = `1px solid ${currentPalette[1]}`;
+    demoCardSeven.style.backgroundColor = `#ffffff`;
+    demoCareerSelector.style.backgroundColor = "#ffffff";
+    radioInputLabel.forEach((element) => {
+      element.style.setProperty("--b-color", `${currentPalette[4]}`);
+      element.style.setProperty("--bh-color", `${currentPalette[1]}`);
+      element.style.setProperty("--bgc-color", `${currentPalette[0]}`);
+      element.style.setProperty("--bc-color", `${currentPalette[6]}`);
+    });
+    footerSectionWrapper.style.border = `2px solid ${currentPalette[6]}`;
+    footerSectionWrapper.style.backgroundColor = `${currentPalette[0]}`;
+    heartIcon.style.backgroundColor = `${currentPalette[6]}`;
+    footerText.forEach((element) => {
+      element.style.color = `${currentPalette[12]}`;
+    });
+
+    careerWrapperP.forEach((element) => {
+      element.style.color = `${currentPalette[12]}`;
+    });
+    githubIcon.style.backgroundColor = "transparent";
+    copyScaleContainer.style.border = `1px solid ${currentPalette[12]}`;
+    shadeContainer.style.backgroundColor =  `${currentPalette[0]}`;
+    shadeContainerPtags.forEach(element => {
+      element.style.color = `${currentPalette[12]}`;
+    });
+    copyResult.style.color = `${currentPalette[12]}`;
+    copyResult.style.backgroundColor = `${currentPalette[2]}`;
+
+  } else if (str === "dark") {
+    gamepadGradient.style.backgroundColor = `${currentPalette[10]}`;
+    gpGd.style.background = `radial-gradient(circle farthest-corner at 60px 45px,${currentPalette[3]}, ${currentPalette[10]} 80%)`;
+    demoGamepadText.style.color = `${currentPalette[0]}`;
+    shopBtn.style.color = `${currentPalette[11]}`;
+    shopBtn.style.backgroundColor = `${currentPalette[1]}`;
+    demoCardThree.style.border = `1px solid ${currentPalette[10]}`;
+    demoCardThree.style.backgroundColor = `${currentPalette[12]}`;
+    demoDate.style.color = `${currentPalette[0]}`;
+    timelines.forEach((element) => {
+      element.style.borderLeft = `8px solid ${currentPalette[6]}`;
+      element.style.backgroundColor = `${currentPalette[10]}`;
+    });
+    timelinesInfoPtags.forEach((element) => {
+      element.style.color = `${currentPalette[0]}`;
+    });
+    timelinesInfoDivtags.forEach((element) => {
+      element.style.color = `${currentPalette[1]}`;
+    });
+    demoCardFour.style.border = `1px solid ${currentPalette[10]}`;
+    demoUserBanner.style.background = `linear-gradient(135deg, #0000 18.75%, ${currentPalette[8]} 0 31.25%, #0000 0), repeating-linear-gradient(45deg, ${currentPalette[8]} -6.25% 6.25%, ${currentPalette[4]} 0 18.75%)`;
+    demoUserBanner.style.backgroundSize = `66px 66px`;
+    profilePictureImg.style.border = `5px solid ${currentPalette[12]}`;
+    profilePictureP.forEach((element) => {
+      element.style.color = `${currentPalette[0]}`;
+    });
+    userFollowBtn.style.backgroundColor = `${currentPalette[8]}`;
+    userFollowBtn.style.color = `${currentPalette[0]}`;
+    demoExpense.style.backgroundColor = `${currentPalette[10]}`;
+    centerText.style.color = `${currentPalette[0]}`;
+    chart.style.setProperty("--bg-color", `${currentPalette[10]}`);
+    circle.style.background = ` conic-gradient(
+    ${currentPalette[4]} 0% 33.33%,
+    ${currentPalette[8]} 33.33% 66.66%,
+    ${currentPalette[2]} 66.66% 100%
+    )`;
+    legendColor.style.color = `${currentPalette[0]}`;
+    tech.style.backgroundColor = `${currentPalette[4]}`;
+    household.style.backgroundColor = `${currentPalette[8]}`;
+    travel.style.backgroundColor = `${currentPalette[2]}`;
+    demoCardSix.style.border = `1px solid ${currentPalette[2]}`;
+    demoCardSix.style.backgroundColor = `${currentPalette[12]}`;
+    demoBtn1.style.backgroundColor = `${currentPalette[4]}`;
+    demoBtn1.style.color = `${currentPalette[0]}`;
+    demoBtn2.style.backgroundColor = `${currentPalette[6]}`;
+    demoBtn2.style.color = `${currentPalette[0]}`;
+    demoBtn3.style.backgroundColor = `${currentPalette[8]}`;
+    demoBtn3.style.color = `${currentPalette[0]}`;
+    demoBtn4.style.backgroundColor = `${currentPalette[12]}`;
+    demoBtn4.style.color = `${currentPalette[8]}`;
+    demoBtn4.style.border = `2px solid ${currentPalette[8]}`;
+    demoBtn5.style.backgroundColor = `${currentPalette[9]}`;
+    demoBtn5.style.color = `${currentPalette[4]}`;
+    demoCardSeven.style.border = `1px solid ${currentPalette[10]}`;
+    demoCardSeven.style.backgroundColor = `${currentPalette[12]}`;
+    demoCareerSelector.style.backgroundColor = `${currentPalette[12]}`;
+    radioInputLabel.forEach((element) => {
+      element.style.setProperty("--b-color", `${currentPalette[10]}`);
+      element.style.setProperty("--bh-color", `${currentPalette[9]}`);
+      element.style.setProperty("--bgc-color", `${currentPalette[12]}`);
+      element.style.setProperty("--bc-color", `${currentPalette[6]}`);
+    });
+    careerWrapperP.forEach((element) => {
+      element.style.color = `${currentPalette[0]}`;
+    });
+    footerSectionWrapper.style.border = `2px solid ${currentPalette[4]}`;
+    footerSectionWrapper.style.backgroundColor = `${currentPalette[12]}`;
+    heartIcon.style.backgroundColor = `${currentPalette[6]}`;
+    footerText.forEach((element) => {
+      element.style.color = `${currentPalette[0]}`;
+    });
+    githubIcon.style.backgroundColor = `${currentPalette[0]}`;
+    copyScaleContainer.style.border = `1px solid ${currentPalette[2]}`;
+    shadeContainer.style.backgroundColor =  `${currentPalette[11]}`;
+    shadeContainerPtags.forEach(element => {
+      element.style.color = `${currentPalette[0]}`;
+    });
+    copyResult.style.color = `${currentPalette[0]}`;
+    copyResult.style.backgroundColor = `${currentPalette[12]}`;
+  }
+  userInput.style.border = `1px solid ${currentPalette[6]}`;
+  userInput.style.setProperty("--outline-focus", `${currentPalette[6]}`);
+  pictureGradient.style.backgroundImage = `linear-gradient(to top, ${currentPalette[11]} 0%, transparent)`;
+  demoPersonName.style.color = `${currentPalette[0]}`;
+
+  demoPlanCard.style.background = `linear-gradient(45deg, ${currentPalette[11]} 0%, ${currentPalette[8]} 100%)`;
+  planTitle.style.color = `${currentPalette[0]}`;
+  planDescription.style.color = `${currentPalette[1]}`;
+  planBtn.style.backgroundColor = `${currentPalette[5]}`;
+  planBtn.style.color = `${currentPalette[0]}`;
+}
 
 // needed to close colorWheel / Canvas when click away
 const userSelectionSection = document.querySelector("#user-input");
@@ -466,16 +655,19 @@ canvas.addEventListener("mousemove", (event) => {
 // set new color examples in 'more options' section
 document.addEventListener("DOMContentLoaded", () => {
   setRandomColors();
-  userColorSelected.style.background = userInput.value;
+  let startColor = currentMoreOptionColor[0];
+  userColorSelected.style.background = startColor;
+  userInput.value = startColor;
+  setAllScales();
 });
 
-randomColorsButton.addEventListener("click", () => {
+newColorsButton.addEventListener("click", () => {
   setRandomColors();
 });
 
 // set selected example option to the scale
 exampleColorContainer.addEventListener("click", (event) => {
-  if (event.target.id != "example-colors") {
+  if (event.target.id != "example-colors" && event.target.id != "new-colors") {
     // prevent invalid selection
     let colorSelected = event.target.id;
     let index = colorSelected.slice(-1);
@@ -483,6 +675,7 @@ exampleColorContainer.addEventListener("click", (event) => {
     userInput.value = currentMoreOptionColor[index - 1];
     userColorSelected.style.background = currentMoreOptionColor[index - 1];
     selectedColorText.innerText = currentMoreOptionColor[index - 1];
+    exampleColorContainer.style.visibility = "hidden";
     setAllScales();
   }
 });
@@ -509,40 +702,59 @@ window.addEventListener("keypress", (event) => {
   }
 });
 
-// adding event listener to each color of the scales
-for (let i = 0; i < colorContainer.length; i += 1) {
-  for (let j = 0; j < 7; j += 1) {
-    let variable = colorContainer[i].children[j];
-    variable.addEventListener("click", (element) => {
-      let name = "#" + element.target.innerText;
-      navigator.clipboard.writeText(name); // copy target color to the clipboard
+// open modeColors modal
+moreColors.addEventListener("click", () => {
+  exampleColorContainer.style.visibility = "visible";
+});
 
-      // set a "copied" feedback text when clicked
-      let colorText = e.target.innerText;
-      element.target.innerText = "Copied!";
-      setTimeout(() => {
-        element.target.innerText = colorText;
-      }, 1500);
-    });
+// close moreColors modal when click away
+body.addEventListener("click", (e) => {
+  if (e.target.id === "more-colors" || e.target.id === "new-colors") {
+    exampleColorContainer.style.visibility = "visible";
+  } else if (e.target.id !== "example-colors") {
+    exampleColorContainer.style.visibility = "hidden";
   }
-}
+});
+
+// adding event listener to each color of the scales to copy the color text
+colorContainerDivs.forEach((element) => {
+  element.addEventListener("click", () => {
+    let colorName = element.innerText;
+    let hex = "#" + colorName;
+    navigator.clipboard.writeText(hex);
+
+    // set feedback text and scale
+    element.innerText = "Copied!";
+    element.style.scale = "0.92";
+
+    setTimeout(() => {
+      element.style.removeProperty("scale");
+    }, 400);
+    setTimeout(() => {
+      element.innerText = colorName;
+    }, 1500);
+  });
+});
+
+// show get-scale/copy modal
+getActualScale.addEventListener("click", () => {
+  getScaleSection.style.visibility = "visible";
+  body.classList.add("stop-scrolling");
+  printOptionSelected("css");
+});
 
 // close the copy modal when click outside of it
 getScaleSection.addEventListener("click", (element) => {
   if (element.target.classList == "get-scale-section") {
     getScaleSection.style.visibility = "hidden";
   }
-});
-
-// show the copy modal
-getActualScale.addEventListener("click", () => {
-  getScaleSection.style.visibility = "visible";
-  printOptionSelected("css");
+  body.classList.remove("stop-scrolling");
 });
 
 // close the copy modal click the x
 closeButton.addEventListener("click", () => {
   getScaleSection.style.visibility = "hidden";
+  body.classList.remove("stop-scrolling");
 });
 
 // showing the option selected (css default)
@@ -564,7 +776,7 @@ tailwindOption.addEventListener("click", () => {
 });
 
 copyResult.addEventListener("click", () => {
-  let allScalesGenerated = getToCopy();
+  let allScalesGenerated = getColorShades();
 
   if (cssOption.classList.contains("active-option")) {
     navigator.clipboard.writeText(allScalesGenerated[0].join(""));
@@ -573,29 +785,30 @@ copyResult.addEventListener("click", () => {
   }
   copyResult.innerText = "Done!";
   setTimeout(() => {
-    copyResult.innerText = "Copy Result";
+    copyResult.innerText = "Copy Scale";
   }, 2000);
 });
 
-// function to print the scale to copy
-function getToCopy() {
-  let allScalesGenerated = getAllScales(userInput.value);
-  let mainScaleGenerated = allScalesGenerated[0];
-  let css = [];
+// function to get all color shades from the palette
+function getColorShades() {
+  let allColorShade = [];
   let tailwind = [];
-  let scales = [];
-  let shade = 700;
+  let css = [];
+  let increment = 50;
 
-  mainScaleGenerated.forEach((color) => {
-    css.push(`.color-shade-${shade} {background-color: ${color};}`);
-    tailwind.push(`--color-shade-${shade}: ${color};`);
-    shade = shade - 100;
+  currentPalette.forEach((element) => {
+    let cssColorShade = `.color-shade-${increment} {background-color: ${element};}`;
+    let tailwindColorShade = `--color-shade-${increment}: ${element};`;
+    css.push(cssColorShade);
+    tailwind.push(tailwindColorShade);
+    increment = increment + 50;
   });
 
-  scales.push(css, tailwind);
+  allColorShade.push(css, tailwind);
 
-  return scales;
+  return allColorShade;
 }
+
 
 // function to print option (css and tailwind) types
 function printOptionSelected(type = "str") {
@@ -603,7 +816,7 @@ function printOptionSelected(type = "str") {
     shadesContainer.removeChild(shadesContainer.firstChild);
   }
 
-  let shadesToPrint = getToCopy();
+  let shadesToPrint = getColorShades();
   let allCssPrint;
   if (type === "css") {
     allCssPrint = shadesToPrint[0];
@@ -615,6 +828,28 @@ function printOptionSelected(type = "str") {
     let pTag = document.createElement("p");
     pTag.innerText = shade;
     pTag.classList.add("shades-container-p");
-    shadesContainer.prepend(pTag);
+    shadesContainer.append(pTag);
   });
 }
+
+// if (getMode && getMode === "dark") {
+//   body.classList.toggle("dark");
+//   modeToggle.setAttribute("src", "./assets/images/sun.svg");
+// }
+
+modeToggle.addEventListener("click", () => {
+  body.classList.toggle("dark");
+  if (body.classList.contains("dark")) {
+    localStorage.setItem("mode", "dark");
+    modeToggle.setAttribute("src", "./assets/images/sun.svg");
+    closeButton.setAttribute("src", "./assets/images/cross-white.svg");
+    heartIcon.setAttribute("src", "./assets/images/heart-check-white.svg");
+    setDemoColors("dark");
+  } else {
+    localStorage.setItem("mode", "light");
+    modeToggle.setAttribute("src", "./assets/images/moon.svg");
+    closeButton.setAttribute("src", "./assets/images/cross-black.svg");
+    heartIcon.setAttribute("src", "./assets/images/heart-check-black.svg");
+    setDemoColors("light");
+  }
+});
