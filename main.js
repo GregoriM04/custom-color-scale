@@ -23,6 +23,7 @@ const selectedColorBox = document.querySelector("#selected-color-box");
 const selectedColorText = document.querySelector("#selected-color-text");
 const colorSelected = document.querySelector("#color-selected");
 const copyResult = document.getElementById("copy-result");
+const scaleOptionsPtags = document.querySelectorAll(".scale-options p");
 const copyScaleContainer = document.querySelector(".copy-scale-container");
 const shadeContainer = document.querySelector(".shades-container");
 const shadeContainerPtags = document.querySelectorAll(".shades-container p");
@@ -342,6 +343,7 @@ setAllScales();
 // function to set colors on demo section
 function setDemoColors(str) {
   if (str === "light") {
+    pictureGradient.style.backgroundImage = `linear-gradient(to top, ${currentPalette[11]} 0%, transparent)`;
     gamepadGradient.style.backgroundColor = `${currentPalette[0]}`;
     gpGd.style.background = `radial-gradient(circle farthest-corner at 60px 45px,${currentPalette[6]}, ${currentPalette[0]} 80%)`;
     demoGamepadText.style.color = `${currentPalette[12]}`;
@@ -384,16 +386,21 @@ function setDemoColors(str) {
     demoCardSix.style.border = `1px solid ${currentPalette[0]}`;
     demoCardSix.style.backgroundColor = `${currentPalette[0]}`;
     demoBtn1.style.backgroundColor = `${currentPalette[4]}`;
-    demoBtn1.style.color = `${currentPalette[0]}`;
+    demoBtn1.style.color = setContrast(hexToRgb(`${currentPalette[4]}`));
     demoBtn2.style.backgroundColor = `${currentPalette[6]}`;
-    demoBtn2.style.color = `${currentPalette[0]}`;
+    demoBtn2.style.color = setContrast(hexToRgb(`${currentPalette[6]}`));
     demoBtn3.style.backgroundColor = `${currentPalette[7]}`;
-    demoBtn3.style.color = `${currentPalette[0]}`;
+    demoBtn3.style.color = setContrast(hexToRgb(`${currentPalette[7]}`));
     demoBtn4.style.backgroundColor = `${currentPalette[0]}`;
     demoBtn4.style.color = `${currentPalette[8]}`;
     demoBtn4.style.border = `2px solid ${currentPalette[8]}`;
     demoBtn5.style.backgroundColor = `${currentPalette[1]}`;
-    demoBtn5.style.color = `${currentPalette[4]}`;
+    if (setContrast(hexToRgb(`${currentPalette[4]}`)) === "#FFFFFF") {
+      demoBtn5.style.color = `${currentPalette[0]}`;
+    } else {
+      demoBtn5.style.color = `${currentPalette[7]}`;
+    }
+
     demoCardSeven.style.border = `1px solid ${currentPalette[1]}`;
     demoCardSeven.style.backgroundColor = `#ffffff`;
     demoCareerSelector.style.backgroundColor = "#ffffff";
@@ -402,6 +409,7 @@ function setDemoColors(str) {
       element.style.setProperty("--bh-color", `${currentPalette[1]}`);
       element.style.setProperty("--bgc-color", `${currentPalette[0]}`);
       element.style.setProperty("--bc-color", `${currentPalette[6]}`);
+      element.style.setProperty("--gray-border-color", "#262626");
     });
     footerSectionWrapper.style.border = `2px solid ${currentPalette[6]}`;
     footerSectionWrapper.style.backgroundColor = `${currentPalette[0]}`;
@@ -409,20 +417,21 @@ function setDemoColors(str) {
     footerText.forEach((element) => {
       element.style.color = `${currentPalette[12]}`;
     });
-
     careerWrapperP.forEach((element) => {
       element.style.color = `${currentPalette[12]}`;
     });
+    planBtn.style.backgroundColor = `${currentPalette[4]}`;
+    planBtn.style.color = setContrast(hexToRgb(`${currentPalette[4]}`));
     githubIcon.style.backgroundColor = "transparent";
     copyScaleContainer.style.border = `1px solid ${currentPalette[12]}`;
-    shadeContainer.style.backgroundColor =  `${currentPalette[0]}`;
-    shadeContainerPtags.forEach(element => {
+    shadeContainer.style.backgroundColor = `${currentPalette[0]}`;
+    shadeContainerPtags.forEach((element) => {
       element.style.color = `${currentPalette[12]}`;
     });
     copyResult.style.color = `${currentPalette[12]}`;
     copyResult.style.backgroundColor = `${currentPalette[2]}`;
-
   } else if (str === "dark") {
+    pictureGradient.style.backgroundImage = `linear-gradient(to top, ${currentPalette[10]} 0%, transparent)`;
     gamepadGradient.style.backgroundColor = `${currentPalette[10]}`;
     gpGd.style.background = `radial-gradient(circle farthest-corner at 60px 45px,${currentPalette[3]}, ${currentPalette[10]} 80%)`;
     demoGamepadText.style.color = `${currentPalette[0]}`;
@@ -465,11 +474,11 @@ function setDemoColors(str) {
     demoCardSix.style.border = `1px solid ${currentPalette[2]}`;
     demoCardSix.style.backgroundColor = `${currentPalette[12]}`;
     demoBtn1.style.backgroundColor = `${currentPalette[4]}`;
-    demoBtn1.style.color = `${currentPalette[0]}`;
+    demoBtn1.style.color = setContrast(hexToRgb(`${currentPalette[4]}`));
     demoBtn2.style.backgroundColor = `${currentPalette[6]}`;
-    demoBtn2.style.color = `${currentPalette[0]}`;
+    demoBtn2.style.color = setContrast(hexToRgb(`${currentPalette[6]}`));
     demoBtn3.style.backgroundColor = `${currentPalette[8]}`;
-    demoBtn3.style.color = `${currentPalette[0]}`;
+    demoBtn3.style.color = setContrast(hexToRgb(`${currentPalette[8]}`));
     demoBtn4.style.backgroundColor = `${currentPalette[12]}`;
     demoBtn4.style.color = `${currentPalette[8]}`;
     demoBtn4.style.border = `2px solid ${currentPalette[8]}`;
@@ -483,20 +492,22 @@ function setDemoColors(str) {
       element.style.setProperty("--bh-color", `${currentPalette[9]}`);
       element.style.setProperty("--bgc-color", `${currentPalette[12]}`);
       element.style.setProperty("--bc-color", `${currentPalette[6]}`);
+      element.style.setProperty("--gray-border-color", "#e5e5e5");
     });
     careerWrapperP.forEach((element) => {
       element.style.color = `${currentPalette[0]}`;
     });
+    planBtn.style.backgroundColor = `${currentPalette[4]}`;
+    planBtn.style.color = setContrast(hexToRgb(`${currentPalette[4]}`));
     footerSectionWrapper.style.border = `2px solid ${currentPalette[4]}`;
     footerSectionWrapper.style.backgroundColor = `${currentPalette[12]}`;
-    heartIcon.style.backgroundColor = `${currentPalette[6]}`;
     footerText.forEach((element) => {
       element.style.color = `${currentPalette[0]}`;
     });
     githubIcon.style.backgroundColor = `${currentPalette[0]}`;
     copyScaleContainer.style.border = `1px solid ${currentPalette[2]}`;
-    shadeContainer.style.backgroundColor =  `${currentPalette[11]}`;
-    shadeContainerPtags.forEach(element => {
+    shadeContainer.style.backgroundColor = `${currentPalette[11]}`;
+    shadeContainerPtags.forEach((element) => {
       element.style.color = `${currentPalette[0]}`;
     });
     copyResult.style.color = `${currentPalette[0]}`;
@@ -504,14 +515,20 @@ function setDemoColors(str) {
   }
   userInput.style.border = `1px solid ${currentPalette[6]}`;
   userInput.style.setProperty("--outline-focus", `${currentPalette[6]}`);
-  pictureGradient.style.backgroundImage = `linear-gradient(to top, ${currentPalette[11]} 0%, transparent)`;
   demoPersonName.style.color = `${currentPalette[0]}`;
-
+  heartIcon.style.backgroundColor = `${currentPalette[6]}`;
+  if (setContrast(hexToRgb(`${currentPalette[6]}`)) === "#FFFFFF") {
+    heartIcon.setAttribute("src", "./assets/images/heart-check-white.svg");
+  } else {
+    heartIcon.setAttribute("src", "./assets/images/heart-check-black.svg");
+  }
   demoPlanCard.style.background = `linear-gradient(45deg, ${currentPalette[11]} 0%, ${currentPalette[8]} 100%)`;
   planTitle.style.color = `${currentPalette[0]}`;
   planDescription.style.color = `${currentPalette[1]}`;
-  planBtn.style.backgroundColor = `${currentPalette[5]}`;
-  planBtn.style.color = `${currentPalette[0]}`;
+  scaleOptionsPtags.forEach((element) => {
+    element.style.setProperty("--bg-color", `${currentPalette[8]}`);
+    element.style.setProperty("--color", `${currentPalette[0]}`);
+  });
 }
 
 // needed to close colorWheel / Canvas when click away
@@ -738,17 +755,21 @@ colorContainerDivs.forEach((element) => {
 
 // show get-scale/copy modal
 getActualScale.addEventListener("click", () => {
+  window.scrollTo({ top: 0, left: 100, behavior: "smooth" });
   getScaleSection.style.visibility = "visible";
-  body.classList.add("stop-scrolling");
+  setTimeout(() => {
+    body.classList.add("stop-scrolling");
+  }, 200);
   printOptionSelected("css");
 });
 
 // close the copy modal when click outside of it
 getScaleSection.addEventListener("click", (element) => {
+  // console.log(element.target.classList)
   if (element.target.classList == "get-scale-section") {
     getScaleSection.style.visibility = "hidden";
+    body.classList.remove("stop-scrolling");
   }
-  body.classList.remove("stop-scrolling");
 });
 
 // close the copy modal click the x
@@ -809,7 +830,6 @@ function getColorShades() {
   return allColorShade;
 }
 
-
 // function to print option (css and tailwind) types
 function printOptionSelected(type = "str") {
   while (shadesContainer.childNodes.length > 0) {
@@ -843,13 +863,11 @@ modeToggle.addEventListener("click", () => {
     localStorage.setItem("mode", "dark");
     modeToggle.setAttribute("src", "./assets/images/sun.svg");
     closeButton.setAttribute("src", "./assets/images/cross-white.svg");
-    heartIcon.setAttribute("src", "./assets/images/heart-check-white.svg");
     setDemoColors("dark");
   } else {
     localStorage.setItem("mode", "light");
     modeToggle.setAttribute("src", "./assets/images/moon.svg");
     closeButton.setAttribute("src", "./assets/images/cross-black.svg");
-    heartIcon.setAttribute("src", "./assets/images/heart-check-black.svg");
     setDemoColors("light");
   }
 });
